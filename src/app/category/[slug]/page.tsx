@@ -1,5 +1,5 @@
 import data from "../../../data/portfolio.json";
-import MediaGrid from "../../../components/MediaGrid";
+import MasonryGallery from "../../../components/MasonryGallery";
 import { notFound } from "next/navigation";
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -14,15 +14,15 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const categoryItems = data.filter(item => item.category === decodedSlug);
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">{decodedSlug}</h1>
-        <p className="mt-4 max-w-3xl text-xl text-gray-500">
-          Viewing my work in {decodedSlug.toLowerCase()}.
+    <div className="space-y-12 pb-24">
+      <div className="max-w-4xl pt-8 border-b border-gray-200 pb-8">
+        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4">{decodedSlug}</h1>
+        <p className="text-xl text-gray-500">
+          A curated collection of my {decodedSlug.toLowerCase()} projects.
         </p>
       </div>
       
-      <MediaGrid items={categoryItems} />
+      <MasonryGallery items={categoryItems} />
     </div>
   );
 }

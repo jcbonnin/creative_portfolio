@@ -1,17 +1,19 @@
 import data from "../data/portfolio.json";
-import MediaGrid from "../components/MediaGrid";
+import MasonryGallery from "../components/MasonryGallery";
 
 export default function Home() {
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">All Work</h1>
-        <p className="mt-4 max-w-3xl text-xl text-gray-500">
-          A comprehensive collection of my creative media work.
+    <div className="space-y-12 pb-24">
+      <div className="max-w-4xl pt-8">
+        <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 sm:text-6xl mb-6">
+          Creative <span className="text-blue-600">Portfolio</span>
+        </h1>
+        <p className="text-xl text-gray-600 leading-relaxed">
+          A comprehensive showcase of my work in graphic design, video production, and public health communication.
         </p>
       </div>
       
-      <MediaGrid items={data} />
+      <MasonryGallery items={data} />
     </div>
   );
 }
