@@ -6,7 +6,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const resolvedParams = await params;
   const decodedSlug = decodeURIComponent(resolvedParams.slug);
   
-  const validCategories = ["Design", "Video", "IEC MATERIALS"];
+  const validCategories = ["Design", "Video", "IEC Materials"];
   if (!validCategories.includes(decodedSlug)) {
     notFound();
   }
@@ -18,7 +18,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <div className="max-w-4xl pt-8 border-b border-gray-200 pb-8">
         <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4">{decodedSlug}</h1>
         <p className="text-xl text-gray-500">
-          A curated collection of my {decodedSlug === "IEC MATERIALS" ? "IEC materials" : decodedSlug.toLowerCase()} projects.
+          A curated collection of my {decodedSlug === "IEC Materials" ? "IEC materials" : decodedSlug.toLowerCase()} projects.
         </p>
       </div>
       
@@ -31,6 +31,6 @@ export function generateStaticParams() {
   return [
     { slug: 'Design' },
     { slug: 'Video' },
-    { slug: 'IEC MATERIALS' },
+    { slug: 'IEC Materials' },
   ];
 }

@@ -23,7 +23,7 @@ export default function Home() {
               <a href="https://www.linkedin.com/in/juan-javier-bonnin/" target="_blank" rel="noreferrer" className="inline-flex items-center px-4 py-2 bg-[#0077b5] hover:bg-[#005e93] text-white rounded-md font-medium transition-colors">
                 LinkedIn Profile <ExternalLink size={16} className="ml-2" />
               </a>
-              <a href="mailto:youremail@example.com" className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md font-medium transition-colors">
+              <a href="mailto:juanjavierbonnin@gmail.com" className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md font-medium transition-colors">
                 Contact Me <Mail size={16} className="ml-2" />
               </a>
             </div>

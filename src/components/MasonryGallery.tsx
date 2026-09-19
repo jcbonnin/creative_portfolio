@@ -4,6 +4,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import Masonry from 'react-masonry-css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const PdfThumbnail = dynamic(() => import('./PdfThumbnail'), { ssr: false });
+
+const encodePath = (p: string) => p.split('/').map(encodeURIComponent).join('/');
 
 const VideoThumbnail = ({ src, inLightbox }: { src: string, inLightbox: boolean }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,7 +24,7 @@ const VideoThumbnail = ({ src, inLightbox }: { src: string, inLightbox: boolean 
   return (
     <video 
       ref={videoRef}
-      src={encodeURI(src)} 
+      src={src} 
       controls={inLightbox}
       autoPlay={inLightbox}
       muted={!inLightbox}
@@ -70,7 +75,8 @@ export default function MasonryGallery({ items }: { items: any[] }) {
     if (!mediaItem) return null;
     
     // Drive links don't need encodeURI on the whole string, just local files
-    const safeUrl = mediaItem.isGoogleDrive ? mediaItem.url : encodeURI(mediaItem.url);
+    // But we need to use encodeURIComponent on each part of the path to handle `[` and `]`
+    const safeUrl = mediaItem.isGoogleDrive ? mediaItem.url : encodePath(mediaItem.url);
 
     if (mediaItem.type === 'image') {
       return (
@@ -92,7 +98,7 @@ export default function MasonryGallery({ items }: { items: any[] }) {
           />
         );
       }
-      return <VideoThumbnail src={mediaItem.url} inLightbox={inLightbox} />;
+      return <VideoThumbnail src={safeUrl} inLightbox={inLightbox} />;
     }
     if (mediaItem.type === 'document') {
       if (inLightbox) {
@@ -102,16 +108,7 @@ export default function MasonryGallery({ items }: { items: any[] }) {
           </object>
         );
       }
-      return (
-        <div className="w-full h-80 bg-gray-50 border-b border-gray-100 flex flex-col items-center justify-center overflow-hidden rounded-t-xl relative group-hover:opacity-90 transition-opacity">
-          <iframe 
-            src={`${safeUrl}#toolbar=0&navpanes=0&scrollbar=0`} 
-            className="w-full h-full pointer-events-none border-0 overflow-hidden" 
-            title={mediaItem.title}
-          />
-          <div className="absolute inset-0 bg-transparent" /> {/* Overlay to capture clicks */}
-        </div>
-      );
+      return <PdfThumbnail url={safeUrl} />;
     }
     return null;
   };
