@@ -1,5 +1,32 @@
 [
   {
+    "title": "Announcement Notices",
+    "description": "Public safety and general assembly announcements.",
+    "category": "Design",
+    "isHealthCommunication": true,
+    "type": "gallery",
+    "items": [
+      {
+        "id": "11.png",
+        "title": "Dengue Public Safety Advisory",
+        "category": "Design",
+        "isHealthCommunication": true,
+        "url": "/media/Graphics/11.png",
+        "type": "image",
+        "originalCategory": "Graphics"
+      },
+      {
+        "id": "7.png",
+        "title": "General Assembly Announcement",
+        "category": "Design",
+        "isHealthCommunication": false,
+        "url": "/media/Graphics/7.png",
+        "type": "image",
+        "originalCategory": "Graphics"
+      }
+    ]
+  },
+  {
     "title": "UPV PH Pub Merchandise Collection",
     "description": "Apparel and merchandise designs including shirts and tote bags for the UPV Public Health Pub.",
     "category": "Design",
@@ -234,24 +261,6 @@
     ]
   },
   {
-    "title": "Dengue Public Safety Advisory",
-    "description": "",
-    "category": "Design",
-    "isHealthCommunication": true,
-    "type": "single",
-    "items": [
-      {
-        "id": "11.png",
-        "title": "Dengue Public Safety Advisory",
-        "category": "Design",
-        "isHealthCommunication": true,
-        "url": "/media/Graphics/11.png",
-        "type": "image",
-        "originalCategory": "Graphics"
-      }
-    ]
-  },
-  {
     "title": "News Release Publication",
     "description": "",
     "category": "Design",
@@ -282,24 +291,6 @@
         "category": "Design",
         "isHealthCommunication": false,
         "url": "/media/Graphics/14.png",
-        "type": "image",
-        "originalCategory": "Graphics"
-      }
-    ]
-  },
-  {
-    "title": "7",
-    "description": "",
-    "category": "Design",
-    "isHealthCommunication": false,
-    "type": "single",
-    "items": [
-      {
-        "id": "7.png",
-        "title": "7",
-        "category": "Design",
-        "isHealthCommunication": false,
-        "url": "/media/Graphics/7.png",
         "type": "image",
         "originalCategory": "Graphics"
       }
