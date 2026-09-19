@@ -4,9 +4,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import Masonry from 'react-masonry-css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react';
-import dynamic from 'next/dynamic';
-
-const PdfThumbnail = dynamic(() => import('./PdfThumbnail'), { ssr: false });
 
 const encodePath = (p: string) => p.split('/').map(encodeURIComponent).join('/');
 
@@ -108,7 +105,19 @@ export default function MasonryGallery({ items }: { items: any[] }) {
           </object>
         );
       }
-      return <PdfThumbnail url={safeUrl} />;
+      return (
+        <div className="w-full h-[400px] bg-white border-b border-gray-100 flex flex-col items-center justify-center overflow-hidden rounded-t-xl relative group-hover:opacity-90 transition-opacity">
+          <div className="absolute inset-0 flex justify-center w-full h-full pointer-events-none" style={{ left: '-5%', right: '-5%', width: '110%', top: '-2%', height: '110%' }}>
+            <iframe 
+              src={`${safeUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`} 
+              className="w-full h-full border-0 pointer-events-none" 
+              title={mediaItem.title}
+              scrolling="no"
+            />
+          </div>
+          <div className="absolute inset-0 bg-transparent z-10" />
+        </div>
+      );
     }
     return null;
   };
