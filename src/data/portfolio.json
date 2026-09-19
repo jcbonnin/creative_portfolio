@@ -302,19 +302,20 @@
     "title": "UPV PH Pub Committees Applications",
     "description": "",
     "category": "Design",
-    "isHealthCommunication": true,
+    "isHealthCommunication": false,
     "type": "single",
     "items": [
       {
         "id": "8.1 Committees Applications.png",
         "title": "UPV PH Pub Committees Applications",
         "category": "Design",
-        "isHealthCommunication": true,
+        "isHealthCommunication": false,
         "url": "/media/Graphics/8.1 Committees Applications.png",
         "type": "image",
         "originalCategory": "Graphics"
       }
-    ]
+    ],
+    "originalIndex": 10
   },
   {
     "title": "Project YOUHUM Polo Shirt Design",
@@ -356,19 +357,20 @@
     "title": "UPV PH Pub Acquaintance Party Poster",
     "description": "",
     "category": "Design",
-    "isHealthCommunication": true,
+    "isHealthCommunication": false,
     "type": "single",
     "items": [
       {
         "id": "PH PUB AKWE POSTER.png",
         "title": "UPV PH Pub Acquaintance Party Poster",
         "category": "Design",
-        "isHealthCommunication": true,
+        "isHealthCommunication": false,
         "url": "/media/Graphics/PH PUB AKWE POSTER.png",
         "type": "image",
         "originalCategory": "Graphics"
       }
-    ]
+    ],
+    "originalIndex": 13
   },
   {
     "title": "Snappy Hands Flagship Event Tarp",
