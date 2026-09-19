@@ -265,19 +265,20 @@
     "title": "News Release Publication",
     "description": "",
     "category": "Design",
-    "isHealthCommunication": true,
+    "isHealthCommunication": false,
     "type": "single",
     "items": [
       {
         "id": "13.png",
         "title": "News Release Publication",
         "category": "Design",
-        "isHealthCommunication": true,
+        "isHealthCommunication": false,
         "url": "/media/Graphics/13.png",
         "type": "image",
         "originalCategory": "Graphics"
       }
-    ]
+    ],
+    "originalIndex": 8
   },
   {
     "title": "Film Screening Announcement",
