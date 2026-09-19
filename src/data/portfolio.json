@@ -66,7 +66,7 @@
     "title": "Leila De Lima Symposium Campaign",
     "description": "Event publicity materials and plaque design for the Leila De Lima Symposium.",
     "category": "Design",
-    "isHealthCommunication": true,
+    "isHealthCommunication": false,
     "type": "gallery",
     "items": [
       {
@@ -96,7 +96,8 @@
         "type": "image",
         "originalCategory": "Graphics"
       }
-    ]
+    ],
+    "originalIndex": 2
   },
   {
     "title": "Project YOUHUM: Launch Posters",
