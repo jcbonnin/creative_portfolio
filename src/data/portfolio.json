@@ -392,19 +392,20 @@
     "title": "UPV PH Batch 2022 Internship Culminating Activity",
     "description": "",
     "category": "Design",
-    "isHealthCommunication": true,
+    "isHealthCommunication": false,
     "type": "single",
     "items": [
       {
         "id": "The PHinal Section  Poster.png",
         "title": "UPV PH Batch 2022 Internship Culminating Activity",
         "category": "Design",
-        "isHealthCommunication": true,
+        "isHealthCommunication": false,
         "url": "/media/Graphics/The PHinal Section  Poster.png",
         "type": "image",
         "originalCategory": "Graphics"
       }
-    ]
+    ],
+    "originalIndex": 15
   },
   {
     "title": "World Heart Day Event Tarp",
