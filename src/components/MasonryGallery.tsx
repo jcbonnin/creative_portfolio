@@ -27,7 +27,7 @@ const VideoThumbnail = ({ src, inLightbox }: { src: string, inLightbox: boolean 
       muted={!inLightbox}
       loop={!inLightbox}
       onLoadedMetadata={handleMetadata}
-      className="w-full h-auto rounded-t-xl" 
+      className={`w-full h-auto ${inLightbox ? 'max-h-[70vh] sm:max-h-[80vh] object-contain' : 'rounded-t-xl'}`} 
       preload={inLightbox ? "auto" : "metadata"}
     />
   );
@@ -80,19 +80,22 @@ export default function MasonryGallery({ items }: { items: any[] }) {
         <img 
           src={safeUrl} 
           alt={mediaItem.title || 'Portfolio Image'} 
-          className={`w-full h-auto ${!inLightbox ? 'bg-gray-100 rounded-t-xl' : 'object-contain max-h-[80vh]'}`}
+          className={`w-full h-auto ${!inLightbox ? 'bg-gray-100 rounded-t-xl' : 'object-contain max-h-[70vh] sm:max-h-[80vh]'}`}
         />
       );
     }
     if (mediaItem.type === 'video') {
       if (mediaItem.isGoogleDrive) {
         return (
-          <iframe 
-            src={safeUrl} 
-            className="w-full aspect-square sm:aspect-video border-0 rounded-t-xl"
-            allow="autoplay"
-            title={mediaItem.title}
-          />
+          <div className={`relative ${!inLightbox ? 'pointer-events-none' : 'w-full'}`}>
+            <iframe 
+              src={safeUrl} 
+              className={`w-full ${!inLightbox ? 'aspect-video rounded-t-xl' : 'h-[60vh] sm:h-[80vh] rounded-lg'} border-0`}
+              allow="autoplay"
+              title={mediaItem.title}
+            />
+            {!inLightbox && <div className="absolute inset-0 bg-transparent z-10" />}
+          </div>
         );
       }
       return <VideoThumbnail src={safeUrl} inLightbox={inLightbox} />;
@@ -100,16 +103,16 @@ export default function MasonryGallery({ items }: { items: any[] }) {
     if (mediaItem.type === 'document') {
       if (inLightbox) {
         return (
-          <object data={safeUrl} type="application/pdf" className="w-full h-[80vh] rounded-md shadow-inner bg-white">
+          <object data={safeUrl} type="application/pdf" className="w-full h-[70vh] sm:h-[80vh] rounded-md shadow-inner bg-white">
             <p>Your browser does not support PDFs. <a href={safeUrl}>Download the PDF</a>.</p>
           </object>
         );
       }
       return (
         <div className="w-full h-[400px] bg-white border-b border-gray-100 flex flex-col items-center justify-center overflow-hidden rounded-t-xl relative group-hover:opacity-90 transition-opacity">
-          <div className="absolute inset-0 flex justify-center w-full h-full pointer-events-none" style={{ left: '-5%', right: '-5%', width: '110%', top: '-2%', height: '110%' }}>
+          <div className="absolute inset-0 flex justify-center items-center w-full h-full pointer-events-none bg-gray-50/50" style={{ padding: '10px' }}>
             <iframe 
-              src={`${safeUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`} 
+              src={`${safeUrl}#toolbar=0&navpanes=0&scrollbar=0&view=Fit`} 
               className="w-full h-full border-0 pointer-events-none" 
               title={mediaItem.title}
               scrolling="no"
