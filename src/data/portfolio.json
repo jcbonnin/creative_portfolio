@@ -434,7 +434,7 @@
   {
     "title": "Dental Health IEC Materials (Hiligaynon)",
     "description": "",
-    "category": "IEC Materials",
+    "category": "IEC MATERIALS",
     "isHealthCommunication": true,
     "type": "single",
     "items": [
@@ -452,7 +452,7 @@
   {
     "title": "Project YOUHUM Oral Health Booklet",
     "description": "",
-    "category": "IEC Materials",
+    "category": "IEC MATERIALS",
     "isHealthCommunication": true,
     "type": "single",
     "items": [
@@ -470,7 +470,7 @@
   {
     "title": "Educational Foldable Fan",
     "description": "",
-    "category": "IEC Materials",
+    "category": "IEC MATERIALS",
     "isHealthCommunication": true,
     "type": "single",
     "items": [
@@ -488,7 +488,7 @@
   {
     "title": "Policy Brief on Rabies Prevention",
     "description": "",
-    "category": "IEC Materials",
+    "category": "IEC MATERIALS",
     "isHealthCommunication": true,
     "type": "single",
     "items": [
@@ -506,7 +506,7 @@
   {
     "title": "Oral Health Booklet for Kids",
     "description": "",
-    "category": "IEC Materials",
+    "category": "IEC MATERIALS",
     "isHealthCommunication": true,
     "type": "single",
     "items": [
@@ -524,7 +524,7 @@
   {
     "title": "Oral Health Information for BHWs",
     "description": "",
-    "category": "IEC Materials",
+    "category": "IEC MATERIALS",
     "isHealthCommunication": true,
     "type": "single",
     "items": [
@@ -542,7 +542,7 @@
   {
     "title": "Health Research Poster",
     "description": "",
-    "category": "IEC Materials",
+    "category": "IEC MATERIALS",
     "isHealthCommunication": true,
     "type": "single",
     "items": [
@@ -560,7 +560,7 @@
   {
     "title": "Snappy Hands Flagship Event Primer",
     "description": "",
-    "category": "IEC Materials",
+    "category": "IEC MATERIALS",
     "isHealthCommunication": true,
     "type": "single",
     "items": [
@@ -615,7 +615,7 @@
     "title": "PMB Advocacy Video",
     "description": "",
     "category": "Video",
-    "isHealthCommunication": true,
+    "isHealthCommunication": false,
     "type": "single",
     "items": [
       {

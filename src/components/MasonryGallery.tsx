@@ -103,9 +103,13 @@ export default function MasonryGallery({ items }: { items: any[] }) {
         );
       }
       return (
-        <div className="w-full h-64 bg-gray-50 border-b border-gray-100 flex flex-col items-center justify-center text-gray-500 rounded-t-xl">
-          <svg className="w-12 h-12 mb-2 text-rose-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-3H9V7h2v6z"/></svg>
-          <span className="text-sm font-medium">PDF Document</span>
+        <div className="w-full h-80 bg-gray-50 border-b border-gray-100 flex flex-col items-center justify-center overflow-hidden rounded-t-xl relative group-hover:opacity-90 transition-opacity">
+          <iframe 
+            src={`${safeUrl}#toolbar=0&navpanes=0&scrollbar=0`} 
+            className="w-full h-full pointer-events-none border-0 overflow-hidden" 
+            title={mediaItem.title}
+          />
+          <div className="absolute inset-0 bg-transparent" /> {/* Overlay to capture clicks */}
         </div>
       );
     }
