@@ -2,13 +2,14 @@
 
 import React, { useState, useMemo } from 'react';
 import portfolioData from '../data/portfolio.json';
-import { Upload, Save, FileImage, Plus, Trash2, Search, X, Check, Activity } from 'lucide-react';
+import { Upload, Save, FileImage, Plus, Trash2, Search, X, Check, Activity, AlertTriangle } from 'lucide-react';
 
 export default function PortfolioManager({ token, setStatus }: { token: string, setStatus: any }) {
   const [items, setItems] = useState<any[]>(portfolioData);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editDraft, setEditDraft] = useState<any | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // New item form state
   const [newFile, setNewFile] = useState<File | null>(null);
@@ -60,47 +61,56 @@ export default function PortfolioManager({ token, setStatus }: { token: string, 
     return `/media/Uploads/${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
   };
 
-  const updatePortfolioJson = async (updatedData: any[]) => {
-    const repoPath = 'jcbonnin/creative_portfolio';
-    const filePath = 'src/data/portfolio.json';
-    const apiUrl = `https://api.github.com/repos/${repoPath}/contents/${filePath}`;
-
-    const getResponse = await fetch(apiUrl, {
-      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    const fileData = await getResponse.json();
+  const publishAllChanges = async () => {
+    if (!token) return setStatus({ type: 'error', message: 'GitHub token required.' });
     
-    const newContent = JSON.stringify(updatedData, null, 2);
-    const base64Content = btoa(unescape(encodeURIComponent(newContent)));
+    try {
+      setStatus({ type: 'loading', message: 'Publishing all portfolio changes to database...' });
+      
+      const repoPath = 'jcbonnin/creative_portfolio';
+      const filePath = 'src/data/portfolio.json';
+      const apiUrl = `https://api.github.com/repos/${repoPath}/contents/${filePath}`;
 
-    const putResponse = await fetch(apiUrl, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `token ${token}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        message: 'Update portfolio JSON data',
-        content: base64Content,
-        sha: fileData.sha,
-        branch: 'main'
-      })
-    });
+      const getResponse = await fetch(apiUrl, {
+        headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      const fileData = await getResponse.json();
+      
+      const newContent = JSON.stringify(items, null, 2);
+      const base64Content = btoa(unescape(encodeURIComponent(newContent)));
 
-    if (!putResponse.ok) throw new Error('Failed to update portfolio JSON.');
+      const putResponse = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Update portfolio JSON data',
+          content: base64Content,
+          sha: fileData.sha,
+          branch: 'main'
+        })
+      });
+
+      if (!putResponse.ok) throw new Error('Failed to update portfolio JSON.');
+
+      setHasUnsavedChanges(false);
+      setStatus({ type: 'success', message: 'Successfully published! Vercel is now rebuilding the site with your changes.' });
+    } catch (err: any) {
+      setStatus({ type: 'error', message: err.message });
+    }
   };
 
   const handleAddNewItem = async () => {
-    if (!token) return setStatus({ type: 'error', message: 'GitHub token required.' });
+    if (!token) return setStatus({ type: 'error', message: 'GitHub token required to upload files.' });
     if (!newFile) return setStatus({ type: 'error', message: 'Please select a file to upload.' });
     if (!newTitle) return setStatus({ type: 'error', message: 'Please provide a title.' });
 
     try {
       setStatus({ type: 'loading', message: 'Uploading file to GitHub (this may take a minute)...' });
       const uploadedUrl = await uploadFileToGitHub(newFile);
-
-      setStatus({ type: 'loading', message: 'Updating portfolio database...' });
       
       const fileType = newFile.type.startsWith('video/') ? 'video' : newFile.type.includes('pdf') ? 'document' : 'image';
       
@@ -121,63 +131,51 @@ export default function PortfolioManager({ token, setStatus }: { token: string, 
         }]
       };
 
-      const updatedItems = [newItem, ...items];
-      await updatePortfolioJson(updatedItems);
-      
-      setItems(updatedItems);
+      setItems([newItem, ...items]);
       setNewFile(null);
       setNewTitle('');
       setNewDescription('');
       setNewHealthComm(false);
-      setStatus({ type: 'success', message: 'New item added successfully! Rebuilding site...' });
+      setHasUnsavedChanges(true);
+      setStatus({ type: 'success', message: 'File uploaded and item added to draft! Remember to click "Publish All Changes" when done.' });
     } catch (err: any) {
       setStatus({ type: 'error', message: err.message });
     }
   };
 
-  const handleSaveEdits = async () => {
-    if (!token) return setStatus({ type: 'error', message: 'GitHub token required.' });
+  const handleApplyEdit = () => {
     if (editingIndex === null || !editDraft) return;
     
-    try {
-      setStatus({ type: 'loading', message: 'Saving edits to database...' });
-      const updated = [...items];
-      updated[editingIndex] = editDraft;
-      
-      // Sync internal items array if it's a single item gallery
-      if (updated[editingIndex].items && updated[editingIndex].items.length === 1) {
-        updated[editingIndex].items[0].title = editDraft.title;
-        updated[editingIndex].items[0].category = editDraft.category;
-        updated[editingIndex].items[0].isHealthCommunication = editDraft.isHealthCommunication;
-      }
-      
-      await updatePortfolioJson(updated);
-      setItems(updated);
-      setStatus({ type: 'success', message: 'Edits saved successfully! Rebuilding site...' });
-      setEditingIndex(null);
-      setEditDraft(null);
-    } catch (err: any) {
-      setStatus({ type: 'error', message: err.message });
+    const updated = [...items];
+    updated[editingIndex] = editDraft;
+    
+    // Sync internal items array if it's a single item gallery
+    if (updated[editingIndex].items && updated[editingIndex].items.length === 1) {
+      updated[editingIndex].items[0].title = editDraft.title;
+      updated[editingIndex].items[0].category = editDraft.category;
+      updated[editingIndex].items[0].isHealthCommunication = editDraft.isHealthCommunication;
     }
+    
+    setItems(updated);
+    setEditingIndex(null);
+    setEditDraft(null);
+    setHasUnsavedChanges(true);
+    setStatus({ type: 'success', message: 'Changes applied to draft. Remember to click "Publish All Changes" when done.' });
   };
 
-  const handleDelete = async (index: number) => {
-    if (!confirm('Are you sure you want to completely remove this item from the gallery?')) return;
+  const handleDelete = (index: number) => {
+    if (!confirm('Are you sure you want to remove this item? (It will be removed from your draft immediately, but not from the live site until you Publish).')) return;
     
-    try {
-      setStatus({ type: 'loading', message: 'Deleting item...' });
-      const updated = [...items];
-      updated.splice(index, 1);
-      await updatePortfolioJson(updated);
-      setItems(updated);
-      setStatus({ type: 'success', message: 'Item removed successfully!' });
-      if (editingIndex === index) {
-        setEditingIndex(null);
-        setEditDraft(null);
-      }
-    } catch(err: any) {
-      setStatus({ type: 'error', message: err.message });
+    const updated = [...items];
+    updated.splice(index, 1);
+    setItems(updated);
+    setHasUnsavedChanges(true);
+    
+    if (editingIndex === index) {
+      setEditingIndex(null);
+      setEditDraft(null);
     }
+    setStatus({ type: 'success', message: 'Item removed from draft.' });
   };
 
   const filteredItems = useMemo(() => {
@@ -194,6 +192,21 @@ export default function PortfolioManager({ token, setStatus }: { token: string, 
 
   return (
     <div className="space-y-8">
+      {hasUnsavedChanges && (
+        <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-md shadow-sm flex items-center justify-between sticky top-4 z-50">
+          <div className="flex items-center gap-3">
+            <AlertTriangle className="text-amber-500" size={24} />
+            <div>
+              <h3 className="font-bold text-amber-900">You have unpublished changes</h3>
+              <p className="text-sm text-amber-700">Edits, deletions, and new uploads have been saved as a draft. They won't appear on the live site until you publish them.</p>
+            </div>
+          </div>
+          <button onClick={publishAllChanges} className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-md shadow-sm transition-colors flex items-center gap-2 whitespace-nowrap">
+            <Save size={18} /> Publish All Changes
+          </button>
+        </div>
+      )}
+
       {/* Upload Section */}
       <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
         <div className="bg-emerald-50/50 px-6 py-4 border-b border-gray-200">
@@ -235,7 +248,7 @@ export default function PortfolioManager({ token, setStatus }: { token: string, 
               </div>
 
               <button onClick={handleAddNewItem} className="w-full mt-2 flex justify-center items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-md font-medium transition-colors shadow-sm">
-                <Upload size={18} /> Upload to Portfolio
+                <Upload size={18} /> Add to Drafts
               </button>
             </div>
           </div>
@@ -304,7 +317,7 @@ export default function PortfolioManager({ token, setStatus }: { token: string, 
                       </div>
 
                       <div className="flex gap-2 pt-2">
-                        <button onClick={handleSaveEdits} className="flex-1 flex items-center justify-center gap-1 bg-blue-600 hover:bg-blue-700 text-white text-xs py-2 rounded-md font-medium transition-colors"><Check size={14}/> Save</button>
+                        <button onClick={handleApplyEdit} className="flex-1 flex items-center justify-center gap-1 bg-blue-600 hover:bg-blue-700 text-white text-xs py-2 rounded-md font-medium transition-colors"><Check size={14}/> Apply Edit</button>
                         <button onClick={() => handleDelete(item.originalIndex)} className="flex-none bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2 rounded-md transition-colors" title="Delete Item"><Trash2 size={14}/></button>
                       </div>
                     </div>
